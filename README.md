@@ -1,4 +1,4 @@
-##### Other JPA Projects 
+#### Other JPA Projects 
 - [JPA-OneToMany](https://github.com/levent-yavuz/JPA-OneToMany)
 - [JPA-ManyToMany](https://github.com/levent-yavuz/JPA-ManyToMany)
 # JPA - OneToOne Bidirectional Relationship
