@@ -15,7 +15,7 @@ If orphanRemoval=true is specified the disconnected  instance is automatically r
 To avoid dangling references as a result of orphan removal this feature should only be enabled for fields that hold private non shared dependent objects.
 
 ## mappedBy
-```
+```java
 @Entity
 public class Team {
 
