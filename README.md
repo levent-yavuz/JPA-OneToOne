@@ -50,86 +50,69 @@ public class Stadium {
 The mappedBy parameter exists on the inverse side of a OneToOne bidirectional relationship.The class with the mappedBy parameter is inverse side.
 If mappedBy is not used for one side then there will be 2 unidirectional OneToOne relationships and in this case, both tables will have a foreign key mutually and this would not be desirable.
 
-mappedBy can only be used for one side of a OneToOne relationship.This means that Team Entity owns this relationship(owning side) and Foreign Key information is also included in the Team table. Thus, foreign key information is not stored in the inverse side (Stadium).
+In this project, the Team Entity owns this relationship(owning side) and Foreign Key information is also included in the Team table. Thus, foreign key information is not stored in the inverse side (Stadium).
 
 ## App Class and Output
 ```
-public class App {
+//Entity manager
+	EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("JPAOneToOneUnit");
+	EntityManager entityManager = entityManagerFactory.createEntityManager();
+		
+	TeamRepository teamRepository = new TeamRepositoryImpl(entityManager);
+	teamRepository.prepareData();
+		
+	StadiumRepository stadiumRepository = new StadiumRepositoryImpl(entityManager);
+		
+	System.out.println("Teams");
+	teamRepository.getAllTeams().stream().forEach(System.out::println);
+		
+	System.out.println("Stadiums");
+	stadiumRepository.getAllStadiums().stream().forEach(System.out::println);
+		
+	System.out.println("\nThe team with the specified (ID = 1) is deleting..");
+	teamRepository.deleteTeam(1);
+		
+	System.out.println("The team's name (the specified ID = 3) is updating to 'Test Team'..");
+	teamRepository.updateTeamName(3,"Test");
+		
+	System.out.println("The stadium with the specified (ID = 4) is deleting..");
+	stadiumRepository.deleteStadium(4);
+		
+	System.out.println("The stadium's name (the specified ID = 2) is updating to 'Test Stadium'..");
+	stadiumRepository.updateStadiumName(2, "Test");
+		
+	System.out.println("\nAll Teams After Delete and Update Operations");
+	teamRepository.getAllTeams().stream().forEach(System.out::println);
+		
+	System.out.println("\nAll Stadiums After Delete and Update Operations");
+	stadiumRepository.getAllStadiums().stream().forEach(System.out::println);
+		
+	//Close the entity manager and associated factory
+        entityManager.close();
+        entityManagerFactory.close();
+```
+```
+Teams
+Team [id =1, name = Manchester City, Stadium = Etihad Stadium]
+Team [id =2, name = Liverpool, Stadium = Old Trafford]
+Team [id =3, name = Manchester United, Stadium = Anfield Road]
+Team [id =4, name = Chelsea, Stadium = Stamford Bridge]
+Stadiums
+Stadium [id = 1, name =Etihad Stadium, Team = Manchester City]
+Stadium [id = 2, name =Old Trafford, Team = Liverpool]
+Stadium [id = 3, name =Anfield Road, Team = Manchester United]
+Stadium [id = 4, name =Stamford Bridge, Team = Chelsea]
 
-	public static void main(String[] args) {
-		
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TeamManagementUnit");
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		
-		TeamRepository repository = new TeamRepositoryImpl(entityManager);
-		repository.prepareData();
-		
-		System.out.println("All Stadiums");
-		repository.allStadiums().stream().forEach(System.out::println);
-		
-		System.out.println("All Teams with Their Stadiums");
-		repository.allTeams().stream().forEach(System.out::println);
-		
-		//Deleting Team(id = 1)and related Stadium => (orphanRemoval = true) 
-		repository.deleteTeam(1);
-		
-		//Updating Team's name which id is 7
-		repository.updateTeamName(3,"Test");
-		
-		//Deleting Stadium(id = 4) and related Team => (orphanRemoval = true)
-		repository.deleteStadium(4);
-		
-		//Updating Stadium's name which id is 8
-		repository.updateStadiumName(2, "Test");
-		
-		System.out.println("All Teams with Their Stadiums After Delete and Update Operations");
-		repository.allTeams().stream().forEach(System.out::println);
-		
-		System.out.println("All Stadiums After Delete and Update Operations");
-		repository.allStadiums().stream().forEach(System.out::println);
-	}
-}
-```
-```
-All Stadiums
-Stadium [id=1, name=Etihad Stadium, yearOfOpening=2020, capacity=55097]
-Stadium [id=2, name=Old Trafford, yearOfOpening=1910, capacity=74310]
-Stadium [id=3, name=Anfield Road, yearOfOpening=1884, capacity=53394]
-Stadium [id=4, name=Stamford Bridge, yearOfOpening=1877, capacity=41837]
-All Teams with Their Stadiums
-Team [id=1, name=Manchester City, nickName=The Sky Blues, shirtColor=Blue and White, championshipsWon=6, stadium=Stadium [id=1, name=Etihad Stadium, yearOfOpening=2020, capacity=55097]]
-Team [id=2, name=Liverpool, nickName=The Reds, shirtColor=Red, championshipsWon=19, stadium=Stadium [id=2, name=Old Trafford, yearOfOpening=1910, capacity=74310]]
-Team [id=3, name=Manchester United, nickName=The Red Devils , shirtColor=Red and White, championshipsWon=20, stadium=Stadium [id=3, name=Anfield Road, yearOfOpening=1884, capacity=53394]]
-Team [id=4, name=Chelsea, nickName=The Blues, shirtColor=White and Blue, championshipsWon=6, stadium=Stadium [id=4, name=Stamford Bridge, yearOfOpening=1877, capacity=41837]]
-All Teams with Their Stadiums After Delete and Update Operations
-Team [id=2, name=Liverpool, nickName=The Reds, shirtColor=Red, championshipsWon=19, stadium=Stadium [id=2, name=Test, yearOfOpening=1910, capacity=74310]]
-Team [id=3, name=Test, nickName=The Red Devils , shirtColor=Red and White, championshipsWon=20, stadium=Stadium [id=3, name=Anfield Road, yearOfOpening=1884, capacity=53394]]
+The team with the specified (ID = 1) is deleting..
+The team's name (the specified ID = 3) is updating to 'Test Team'..
+The stadium with the specified (ID = 4) is deleting..
+The stadium's name (the specified ID = 2) is updating to 'Test Stadium'..
+
+All Teams After Delete and Update Operations
+Team [id =2, name = Liverpool, Stadium = Test]
+Team [id =3, name = Test, Stadium = Anfield Road]
+
 All Stadiums After Delete and Update Operations
-Stadium [id=2, name=Test, yearOfOpening=1910, capacity=74310]
-Stadium [id=3, name=Anfield Road, yearOfOpening=1884, capacity=53394]
+Stadium [id = 2, name =Test, Team = Liverpool]
+Stadium [id = 3, name =Anfield Road, Team = Test]
 ```
-# StackOverflowError Due to Using of toString Method
-
-## toString Method of Team Class
-
-```
-@Override
-	public String toString() {
-		return "Team [id=" + id + ", name=" + name + ", nickName=" + nickName + ", shirtColor=" + shirtColor
-				+ ", championshipsWon=" + championshipsWon + ", stadium=" + stadium + "]";
-	}
-```
-
-## toString Method of Stadium Class
-
-```
-@Override
-	public String toString() {
-		return "Stadium [id=" + id + ", name=" + name + ", yearOfOpening=" + yearOfOpening + ", capacity=" + capacity
-				+  "]";
-	}
-```
-
-In the toString methods, there will be a continuous call to each other. The Team object calls the Stadium object, and the Stadium object calls the Team object. In this case, it causes an error(StackOverflowError).
-
-I solved this problem by removing Team object from toString method in Stadium class. 
