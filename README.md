@@ -31,7 +31,7 @@ public class Team {
 	private Stadium stadium;
 }
 ```
-```
+```java
 @Entity
 public class Stadium {
 
@@ -53,7 +53,7 @@ If mappedBy is not used for one side then there will be 2 unidirectional OneToOn
 In this project, the Team Entity owns this relationship(owning side) and Foreign Key information is also included in the Team table. Thus, foreign key information is not stored in the inverse side (Stadium).
 
 ## App Class and Output
-```
+```java
 //Entity manager
 	EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("JPAOneToOneUnit");
 	EntityManager entityManager = entityManagerFactory.createEntityManager();
