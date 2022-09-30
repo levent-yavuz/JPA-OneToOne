@@ -1,3 +1,6 @@
+## Other JPA Projects 
+JPA-OneToMany (https://github.com/levent-yavuz/JPA-OneToMany)
+JPA-ManyToMany (https://github.com/levent-yavuz/JPA-ManyToMany)
 # JPA - OneToOne Bidirectional Relationship
 
 For this relationship type, the default data loading method is EAGER: every time you ask for A, the B will also be retrieved.
@@ -116,4 +119,3 @@ All Stadiums After Delete and Update Operations
 Stadium [id = 2, name =Test, Team = Liverpool]
 Stadium [id = 3, name =Anfield Road, Team = Test]
 ```
-## <a id="anchortext" />Header text
